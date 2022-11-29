@@ -1,1 +1,39 @@
-<h1>Github Pages test</h1>
+<h1>Dog Day</h1>
+<h2>Find out what day you and your dog will be the same age</h2>
+<div><label>Your birthday: <input id="human-bday-input" type="date" onchange="go()"></label></div>
+<div><label>Your dog's birthday: <input id="dog-bday-input" type="date" onchange="go()"></label></div>
+<span id="result"></span>
+
+<script>
+const humanInput = document.getElementById("human-bday-input");
+const dogInput = document.getElementById("dog-bday-input");
+const result = document.getElementById("result");
+
+function output(s) {
+    result.innerText = s;
+}
+
+function go() {
+    if (!humanInput.value || !dogInput.value) {
+        return;
+    }
+
+    const tzOffset = new Date().getTimezoneOffset() * 60000;
+    const humanBday = new Date(Date.parse(humanInput.value) + tzOffset);
+    const dogBday = new Date(Date.parse(dogInput.value) + tzOffset);
+
+    if (dogBday < -52674942702000) { // the year 300
+        // They're probably not done typing the year
+        output();
+        return;
+    }
+
+    if (dogBday < humanBday) {
+        output("Your dog will always be older than you.")
+        return;
+    }
+
+    const dogDay = new Date(((7 * dogBday) - humanBday) / 6);
+    output("You and your dog will be the same age on " + dogDay.toLocaleDateString());
+}
+</script>
